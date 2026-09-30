@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/head.ejs") %>
+        <title>Add Blog</title>
+</head>
+
+<body>
+    <%- include("./partials/nav.ejs") %>
+        <div class="container d-flex justify-content-center flex-column align-items-center mt-5 pt-5">
+            <% if (locals.error) { %>
+                <%- include("./partials/error.ejs") %>
+                    <% } %>
+                        <form action="/blog" method="post" enctype="multipart/form-data"
+                            class="w-50 bg-info-subtle border shadow-lg border-1 rounded-3 py-4 px-3">
+                            <h3 class="mb-3 text-center text-primary fw-bold">Create New Blog</h3>
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" name="title" id="title">
+                            </div>
+                            <div class="mb-3">
+                                <label for="body" class="form-label">Blog Body</label>
+                                <textarea class="form-control" name="body" id="body" rows="3"></textarea>
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="coverImage" class="form-label">Cover Image</label>
+                                <input type="file" class="form-control" name="coverImage" id="coverImage" />
+                            </div>
+
+                            <button class="btn btn-outline-primary" type="submit">Submit</button>
+                        </form>
+        </div>
+
+
+        <%- include("./partials/script.ejs") %>
+</body>
+
+</html>

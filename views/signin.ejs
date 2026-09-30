@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/head.ejs") %>
+        <title>Signin</title>
+</head>
+
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+        <div class="container d-flex justify-content-center flex-column align-items-center mt-5 pt-5">
+            <% if (locals.error) { %>
+                <%- include("./partials/error.ejs") %>
+                    <% } %>
+                        <form class="w-50 bg-info-subtle border shadow-lg border-1 rounded-3 py-4 px-3" method="post"
+                            action="/user/signin">
+                            <h3 class="mb-3 text-center text-primary fw-bold">Sign In</h3>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    aria-describedby="emailHelp">
+                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password" id="password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+
+                        <p class="mt-1">Create an account! <a class="text-decoration-none fw-semibold"
+                                href="/user/signup">Sign
+                                Up</a></>
+        </div>
+
+
+        <%- include("./partials/script.ejs") %>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+:root {
+  --bs-font-sans-serif:
+    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --bs-font-monospace:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.display-1,
+.display-2,
+.display-3,
+.display-4 {
+  font-family: "Lora", Georgia, "Times New Roman", serif;
+}
+
+body {
+  line-height: 1.6;
+}
+
+.card {
+  font-family: var(--bs-font-sans-serif);
+}
+
+.card-img-top {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.blog-excerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.blog-cover {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.blog-content p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}

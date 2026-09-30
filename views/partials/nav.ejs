@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container py-1">
+        <a class="navbar-brand display-3 fw-bold" href="/">Blogify</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse fw-medium" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item me-1">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+
+
+                <% if (locals.user) { %>
+                    <li class="nav-item me-1">
+                        <a class="nav-link" href="/blog/add-blog">Add Blog</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle ms-4" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <%- locals.user.fullName %>
+                        </a>
+                        <ul class="dropdown-menu bg-dark">
+                            <li><a class="dropdown-item text-light bg-dark" href="/user/logout">Logout</a></li>
+
+                        </ul>
+                        <% } else { %>
+                    <li class="nav-item me-1">
+                        <a class="nav-link btn btn-outline-success text-light fw-semibold fs-6 px-4 py-2 ms-4"
+                            href="/user/signin">Sign
+                            In</a>
+                    </li>
+                    </li>
+                    <% } %>
+
+            </ul>
+        </div>
+    </div>
+</nav>

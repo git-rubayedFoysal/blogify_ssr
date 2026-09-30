@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/head.ejs") %>
+        <title>
+            <%= locals.blog ? blog.title + " | Blogify" : "Blogify" %>
+        </title>
+</head>
+
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+        <% if (locals.blog) { %>
+            <main class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-9 col-xl-8">
+
+                        <a href="/"
+                            class="text-decoration-none text-secondary fw-medium small d-inline-block mb-3">
+                            &larr; Back to home
+                        </a>
+
+                        <h1 class="fw-bold mb-3">
+                            <%= blog.title %>
+                        </h1>
+
+                        <div class="d-flex align-items-center gap-2 mb-4">
+                            <img src="<%= blog.createdBy.avatarURL %>" alt="<%= blog.createdBy.fullName %>"
+                                class="rounded-circle flex-shrink-0" width="40" height="40"
+                                style="object-fit: cover;">
+                            <div class="lh-sm">
+                                <div class="fw-semibold">
+                                    <%= blog.createdBy.fullName %>
+                                </div>
+                                <div class="text-secondary small">
+                                    <%= blog.createdAt.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) %>
+                                </div>
+                            </div>
+                            <% if (blog.createdBy.role==="ADMIN" ) { %>
+                                <span class="badge text-bg-primary ms-1">Admin</span>
+                                <% } %>
+                        </div>
+
+                        <% if (blog.coverImageURL) { %>
+                            <img src="<%= blog.coverImageURL %>" alt="<%= blog.title %>"
+                                class="blog-cover rounded-3 w-100 mb-4">
+                            <% } %>
+
+                                <article class="blog-content">
+                                    <% blog.body.split(/\n+/).filter(p=> p.trim()).forEach(par=> { %>
+                                        <p>
+                                            <%= par.trim() %>
+                                        </p>
+                                        <% }) %>
+                                </article>
+
+                                <hr class="my-5">
+
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="<%= blog.createdBy.avatarURL %>" alt="<%= blog.createdBy.fullName %>"
+                                        class="rounded-circle flex-shrink-0" width="56" height="56"
+                                        style="object-fit: cover;">
+                                    <div>
+                                        <div class="text-secondary small mb-1">Written by</div>
+                                        <div class="fw-semibold fs-5">
+                                            <%= blog.createdBy.fullName %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                    </div>
+                </div>
+            </main>
+            <% } %>
+
+                <%- include("./partials/script.ejs") %>
+</body>
+
+</html>
