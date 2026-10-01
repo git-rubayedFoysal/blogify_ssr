@@ -52,3 +52,10 @@ body {
   font-size: 1.1rem;
   margin-bottom: 1rem;
 }
+
+.comment-badge {
+  font-family: var(--bs-font-monospace);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 0 4px 0;
+}

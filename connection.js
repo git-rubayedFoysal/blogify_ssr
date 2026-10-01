@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 /**
- * Provide MongoDB connection string for connect database.
+ * Opens the Mongoose connection to MongoDB and logs the result.
  * @param {String} connectionString - The MongoDB connection string.
  */
 

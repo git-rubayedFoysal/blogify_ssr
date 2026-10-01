@@ -14,20 +14,32 @@ import Blog from "./models/blog.js";
 const app = express();
 const port = 3000;
 
+// Configure EJS as the view engine
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
+// Serve static assets (css, images, uploaded blog covers)
 app.use(express.static("public"));
 
+// Parse form submissions (signin/signup/blog create) and JSON bodies
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Parse cookies so req.cookies.accessToken is available
 app.use(cookieParser());
+
+// Runs on every request: verifies the accessToken cookie and attaches
+// req.user when valid. Expired/invalid tokens are cleared gracefully.
 app.use(checkAuthentication);
 
-app.use("/user", userRouter);
-app.use("/blog", blogRouter);
+// Route modules
+app.use("/user", userRouter); // signin, signup, logout
+app.use("/blog", blogRouter); // blogs, comments
 
+/**
+ * Home page - lists all blogs newest first.
+ * Passes req.user so the nav can render login state.
+ */
 app.get("/", async (req, res) => {
   const allBlogs = await Blog.find({}).sort({
     createdAt: -1,
@@ -38,7 +50,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-// 404 handler & default error handler
+// 404 handler & default error handler (must be registered last)
 app.use(notFoundErrorHandler);
 app.use(errorHandler);
 

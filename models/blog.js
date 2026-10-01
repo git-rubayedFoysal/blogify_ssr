@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Blog post collection; createdBy references the author (user).
 const blogSchema = new mongoose.Schema(
   {
     title: {

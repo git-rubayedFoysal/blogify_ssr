@@ -16,8 +16,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-9 col-xl-8">
 
-                        <a href="/"
-                            class="text-decoration-none text-secondary fw-medium small d-inline-block mb-3">
+                        <a href="/" class="text-decoration-none text-secondary fw-medium small d-inline-block mb-3">
                             &larr; Back to home
                         </a>
 
@@ -27,14 +26,14 @@
 
                         <div class="d-flex align-items-center gap-2 mb-4">
                             <img src="<%= blog.createdBy.avatarURL %>" alt="<%= blog.createdBy.fullName %>"
-                                class="rounded-circle flex-shrink-0" width="40" height="40"
-                                style="object-fit: cover;">
+                                class="rounded-circle flex-shrink-0" width="40" height="40" style="object-fit: cover;">
                             <div class="lh-sm">
                                 <div class="fw-semibold">
                                     <%= blog.createdBy.fullName %>
                                 </div>
                                 <div class="text-secondary small">
-                                    <%= blog.createdAt.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) %>
+                                    <%= blog.createdAt.toLocaleDateString("en-US", { year: "numeric" , month: "short" ,
+                                        day: "numeric" }) %>
                                 </div>
                             </div>
                             <% if (blog.createdBy.role==="ADMIN" ) { %>
@@ -68,6 +67,61 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="mt-4">
+                                    <h3 class="fs-4 fw-semibold">Comments <span class="comment-badge">
+                                            (<%=locals.comments?.length %>)</span>
+                                    </h3>
+                                    <% if (locals.user) { %>
+                                        <form action="/blog/comment/<%= locals.blog._id %>" method="post">
+
+                                            <div>
+                                                <label for="content" class="form-label"></label>
+                                                <textarea class="form-control p-2" name="content" id="content" rows="3"
+                                                    placeholder="Add Comments..."></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-success mt-3">
+                                                Add Comments
+                                            </button>
+                                        </form>
+                                        <% } %>
+                                </div>
+
+                                <% if (locals.comments) { %>
+                                    <div class="mt-4">
+                                        <% if (locals.comments.length> 0) { %>
+                                            <% comments.forEach(comment=> { %>
+                                                <div class="d-flex align-items-start alert alert-success gap-3">
+                                                    <img src="<%= comment.createdBy.avatarURL %>"
+                                                        alt="<%= comment.createdBy.fullName %>"
+                                                        class="rounded-circle flex-shrink-0" width="56" height="56"
+                                                        style="object-fit: cover;">
+                                                    <div>
+                                                        <div class="fw-semibold fs-6">
+                                                            <%= comment.createdBy.fullName %>
+                                                                <% if (comment.createdBy.role==="ADMIN" ) { %>
+                                                                    <span
+                                                                        class="badge text-bg-primary ms-1 ">Admin</span>
+                                                                    <% } %>
+                                                        </div>
+                                                        <div>
+                                                            <%= comment.content %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-center alert alert-danger gap-3 text-center">
+
+                                                            <div class="fw-semibold fs-6 text-center">
+                                                                No comments yet. Be the first to comment!
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+
+                                    </div>
+                                    <% } %>
 
                     </div>
                 </div>
