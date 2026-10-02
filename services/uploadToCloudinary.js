@@ -13,6 +13,8 @@ export const uploadToCloudinary = (buffer, folder) =>
       {
         folder,                  // Organizes uploads under this folder
         resource_type: "image",  // Optimizes delivery for images
+        quality: "auto:best",    // Preserve near-original visual quality
+        fetch_format: "auto",    // Deliver WebP/AVIF when browser supports it
       },
       (error, result) => {
         if (error) {
