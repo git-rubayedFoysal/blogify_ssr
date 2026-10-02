@@ -12,7 +12,7 @@ import { checkAuthentication } from "./middlewares/authentication.js";
 import Blog from "./models/blog.js";
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Configure EJS as the view engine
 app.set("view engine", "ejs");
@@ -54,7 +54,7 @@ app.get("/", async (req, res) => {
 app.use(notFoundErrorHandler);
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-  connectDB("mongodb://127.0.0.1:27017/blogify");
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+  connectDB(process.env.MONGO_URI);
 });
