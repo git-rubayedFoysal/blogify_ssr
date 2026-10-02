@@ -14,6 +14,9 @@ import Blog from "./models/blog.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust Render's reverse proxy
+app.set("trust proxy", 1);
+
 // Configure EJS as the view engine
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -45,16 +48,28 @@ app.get("/", async (req, res) => {
     createdAt: -1,
   });
   res.render("home", {
-    user: req?.user,
+    user: req.user,
     blogs: allBlogs,
   });
+});
+
+// Health check
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
 });
 
 // 404 handler & default error handler (must be registered last)
 app.use(notFoundErrorHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  connectDB(process.env.MONGO_URI);
-});
+// Start server and database
+try {
+  await connectDB(process.env.MONGO_URI);
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+} catch (error) {
+  console.error("Failed to start application:", error);
+  process.exit(1);
+}

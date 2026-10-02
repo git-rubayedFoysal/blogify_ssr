@@ -1,23 +1,19 @@
 import multer from "multer";
-import path from "node:path";
-import { mkdirSync } from "node:fs";
-import crypto from "node:crypto";
 
-// Stores uploaded cover images under public/uploads/<userId>/
-// NOTE: destination reads req.user.id — must run after checkAuthentication
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = path.resolve("public", "uploads", req.user.id.toString());
-
-    mkdirSync(uploadDir, { recursive: true });
-    cb(null, uploadDir);
+// Configure multer for Cloudinary uploads.
+// Uses memoryStorage (buffer) instead of disk — files are streamed directly
+// to Cloudinary via upload_stream in services/uploadToCloudinary.js.
+// No local disk persistence needed; works on ephemeral filesystems (Render, etc.).
+export const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB max per file
   },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const fileName = `${crypto.randomUUID()}${ext}`;
-
-    cb(null, fileName);
+  fileFilter: (req, file, cb) => {
+    // Accept only image MIME types (jpeg, png, webp, gif, avif, etc.)
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Only images allowed"));
+    }
+    cb(null, true);
   },
 });
-
-export const upload = multer({ storage });

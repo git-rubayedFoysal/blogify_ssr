@@ -1,5 +1,6 @@
 import Blog from "../models/blog.js";
 import Comment from "../models/comment.js";
+import { uploadToCloudinary } from "../services/uploadToCloudinary.js";
 
 // module scaffolding
 const blog = {};
@@ -17,9 +18,11 @@ blog.renderAddBlogForm = (req, res) => {
 
 /**
  * POST /blog - creates a blog post (auth required).
- * Cover image is already uploaded by multer (routes/blog.js); title/body required.
- * @param {Object} req - Express request object (title, body in body; coverImage in file).
- * @param {Object} res - Express response object.
+ * Cover image (optional) is uploaded to Cloudinary via multer memory buffer.
+ * Title and body are required. On success stores Cloudinary secure_url + public_id
+ * in the blog document and redirects to the new blog page.
+ * @param {Object} req - Express request (title, body in body; coverImage in file.buffer).
+ * @param {Object} res - Express response.
  */
 blog.createBlog = async (req, res) => {
   const { title, body } = req.body;
@@ -28,14 +31,35 @@ blog.createBlog = async (req, res) => {
       error: "Invalid request, all fields are required!",
     });
 
-  const newBlog = await Blog.create({
-    title,
-    body,
-    coverImageURL: `/uploads/${req.user.id}/${req.file?.filename}`,
-    createdBy: req.user.id,
-  });
+  try {
+    let coverImageURL;
+    let coverImagePublicId;
 
-  res.redirect(`/blog/${newBlog._id}`);
+    if (req.file) {
+      const result = await uploadToCloudinary(
+        req.file.buffer,
+        `blogify/users/${req.user.id}`,
+      );
+
+      coverImageURL = result.secure_url;
+      coverImagePublicId = result.public_id;
+    }
+
+    const newBlog = await Blog.create({
+      title,
+      body,
+      coverImageURL,
+      coverImagePublicId,
+      createdBy: req.user.id,
+    });
+
+    res.redirect(`/blog/${newBlog._id}`);
+  } catch (error) {
+    console.error("Create blog failed:", error.message);
+    res.status(500).render("addBlog", {
+      error: "Something went wrong while creating the blog. Please try again.",
+    });
+  }
 };
 
 /**
